@@ -41,9 +41,10 @@ def get_y_values(w,b, x_values):
     return y
 
 # main function to run gradient descent
-def d_gradient(trials, alpha, w, b, x_values, real_y_values):
+# split = trial to actually add to y_array
+def d_gradient(trials, split, alpha, w, b, x_values, real_y_values):
     y_arrays = []
-    y_arrays.append(get_y_values(w,b,x_values))
+    costs = []
 
     for i in range(0,trials):
         temp_w = w - alpha*(calc_der_w(w,b,x_values,real_y_values))
@@ -52,14 +53,18 @@ def d_gradient(trials, alpha, w, b, x_values, real_y_values):
         w = temp_w
         b = temp_b
         print(f"trial {i}, w: {w}, b: {b}, cost: {get_squared_cost(x_values, real_y_values, w,b)}")
-        y_arrays.append(get_y_values(w,b,x_values))
-    return y_arrays
+        if (i % split == 0):
+            y_arrays.append(get_y_values(w,b,x_values))
+            costs.append(get_squared_cost(x_values, real_y_values, w,b))
+    return (y_arrays, costs)
+
+trials = 12000 # number trials model will run
+split = 1000 # output to graph every split # of trials
+
 
 alpha = 0.001
-
 w = 1
 b = 20
-
 cost = 0
 
 # get x and y data
@@ -77,13 +82,13 @@ y = []
 for i in x:
     y.append(i*w + b)
 
-regression_vals = d_gradient(15000, alpha, w, b, x, house_prices) #runs 15000 trials
-for i in range(len(regression_vals)):
-    if(i % 1000 == 0 ):
-        plt.plot(x, regression_vals[i], label=f"Trial {i}")
+regression_vals = d_gradient(trials, split, alpha, w, b, x, house_prices) #runs 15000 trials
+print(regression_vals[1][0])
+for i in range(len(regression_vals[0])):
+    plt.plot(x, regression_vals[0][i], label=f"Trial {(i + 1) * split}, cost: {regression_vals[1][i]:.3f}")
 
-plt.plot(x, y, label="test of regression", color="red")
+plt.plot(x, y, label="Initial line given", color="red")
 plt.xlabel("Age (years)")
-plt.ylabel("Cost")
+plt.ylabel("Price of Unit Area")
 plt.legend()
 plt.show()

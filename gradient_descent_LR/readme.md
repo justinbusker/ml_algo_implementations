@@ -11,4 +11,8 @@ Random data set where x is house age and y is house cost (from Kaggle)
 ## Multiple Feature Linear Regression
 - Implemented multiple feature gradient descent
 - Compared unscaled vs scaled features to see the effect on gradient descent algorithm
+	- Scaling was simply x_col / max(x_col)
+### Costs after 1000 iterations 
+Unscaled = ~468
+Scaled = ~294
 ![Unscaled vs. Scaled Gradient Descent](./imgs/Unscaled_Scaled_MV_GD.png)

@@ -65,7 +65,7 @@ def_costs = gradient_descent(X, w, b, y, alpha, iterations)
 
 x = np.arange(0,iterations)
 
-fig, axs = plt.subplots(1,2, figsize=(10, 4), sharey= True )
+fig, axs = plt.subplots(1,2, figsize=(10, 4))
 
 axs[0].plot( x,def_costs)
 axs[0].set_title("Default Scaling Descent")

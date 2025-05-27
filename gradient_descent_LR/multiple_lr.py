@@ -48,13 +48,30 @@ def gradient_descent(X, w, b, y, alpha, iterations):
         w = temp_w
         b = temp_b
         costs.append(compute_cost(X,w,b,y))
-    plt.plot( x,costs)
-    plt.show()
+    
+    return costs
 
 def scale_features(X):
-    m,n = X.size
-    for i in range(n):
-        
+    m,n = X.shape
+    rescaled_X = X.copy()
 
-gradient_descent(X, w, b, y, alpha, iterations)
+    for i in range(n-1):
+        rescaled_X[:, i] = rescaled_X[:, i] / np.max(rescaled_X[:, i])
+    return rescaled_X
+
+scale_X = scale_features(X)
+scaled_costs = gradient_descent(scale_X, w, b, y, alpha, iterations)
+def_costs = gradient_descent(X, w, b, y, alpha, iterations)
+
+x = np.arange(0,iterations)
+
+fig, axs = plt.subplots(1,2)
+
+plt.xlabel("Iterations")
+plt.ylabel("Cost")
+axs[0].plot( x,def_costs)
+axs[0].set_title("Defualt Scaling Descent")
+axs[1].plot( x,scaled_costs)
+axs[1].set_title("Scaled Descent")
+plt.show()
 
